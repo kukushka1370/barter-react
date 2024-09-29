@@ -1,0 +1,25 @@
+.bank-account-modal {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%);
+    background: #f5ecec;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    padding: 10px 25px 50px 25px;
+    border-radius: 7px;
+    width: 90%;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 20px;
+    padding-top: 30px;
+}
+
+.modal-body>input {
+    padding: 3px 10px;
+    border-radius: 5px;
+    border: 1px solid;
+}

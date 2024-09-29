@@ -1,0 +1,16 @@
+.adapt-img {
+    max-height: 280px;
+}
+
+.product-card {
+    flex-direction: column;
+    height: 500px;
+    background: aliceblue;
+    border-radius: 7px;
+}
+
+/* @media (max-width: 535px) {
+    .product-card {
+        height: 500px;
+    }
+} */

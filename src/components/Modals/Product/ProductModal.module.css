@@ -1,0 +1,26 @@
+.product-modal {
+    position: absolute;
+    background: rgba(81, 81, 81, 0.9);
+    width: 90%;
+    padding: 25px;
+    /* height: 300px; */
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.block {
+    display: flex;
+    /* width: 400px; */
+    justify-content: space-between;
+    padding: 20px 0;
+    color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.block:not(.block:last-of-type) {
+    border-bottom: 1px solid rgb(124, 124, 124);
+}

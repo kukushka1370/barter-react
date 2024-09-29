@@ -1,0 +1,14 @@
+.list {
+    padding: 0 12px;
+    width: 100%;
+    overflow-y: auto;
+    max-height: 490px;
+    padding: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: gray;
+}
+
+.list-item {
+    list-style-type: none;
+    border-bottom: 1px solid #c9c9c9;
+}

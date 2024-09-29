@@ -1,0 +1,16 @@
+.list {
+    padding: 0 12px;
+    width: 100%;
+}
+
+.list-item {
+    list-style-type: none;
+    /* display: flex!important; */
+    border-bottom: 1px solid #c9c9c9;
+}
+
+.invis-input {
+    border: none;
+    padding: 4px;
+    width: 120px;
+}

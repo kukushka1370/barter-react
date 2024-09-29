@@ -1,0 +1,10 @@
+.menu-btn {
+    border: none;
+    background-color: aliceblue;
+    height: 45px;
+    border-radius: 5px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

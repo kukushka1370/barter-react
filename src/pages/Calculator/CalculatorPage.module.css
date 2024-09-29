@@ -1,0 +1,9 @@
+.bl {
+    height: 50px;
+    width: 320px;
+    padding: 20px;
+    background: #3a83c2;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
