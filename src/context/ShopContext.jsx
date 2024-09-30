@@ -155,13 +155,13 @@ export const ShopContextProvider = ({ children }) => {
     };
 
     const updateCommission = () => {
-        alert(commis);
-        // StatisticsService.updateTotalMoney({ updatedMoney: n }).then((res) => {console.log(res.data); setStatistics(res.data)});
+        // alert(commis);
+        StatisticsService.updateCommission({ commission: commis }).then((res) => { console.log(res.data); setStatistics(res.data) });
     };
 
     const updateMax = () => {
-        alert(max);
-        // StatisticsService.updateTotalMoney({ updatedMoney: n }).then((res) => {console.log(res.data); setStatistics(res.data)});
+        // alert(max);
+        StatisticsService.updateMax({ max }).then((res) => { console.log(res.data); setStatistics(res.data) });
     };
 
     return <ShopContext.Provider

@@ -12,4 +12,8 @@ export default class BankAccountService {
     static async deleteBankAccount(userId, currencyCode) {
         return $api.delete(`/bank/${userId}/${currencyCode}`);
     }
+
+    static async transferMoney(info) {
+        return $api.post("/bank/transfer", info);
+    }
 }

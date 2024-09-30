@@ -17,9 +17,9 @@ const StatisticsPage = () => {
         },
         "Коммиссия по сделкам": [
             ["Вид коммиссии", "Ставка коммиссии", "Макс номинал ставки"],
-            ["Коммиссия системы :", "2%", "	0"],
-            ["Инвестору франшизы X2", "1%", "	0"],
-            ["Менеджеру по индексу X2", "1%", "0"],
+            ["Коммиссия системы :", `${statistics?.systemCommission || "1"}%`, `${statistics?.systemCommissionMax || "0"}`],
+            ["Инвестору франшизы X2", `${statistics?.investorCommission || "1"}%`, `${statistics?.investorCommissionMax || "0"}`],
+            ["Менеджеру по индексу X2", `${statistics?.managerCommission || "1"}%`, `${statistics?.managerCommissionMax || "0"}`],
         ],
         "Товары и услуги": {
             "Кол-во предложений в системе": products?.length || 0,

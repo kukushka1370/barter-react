@@ -43,9 +43,10 @@ const DealsPage = () => {
             <div className={styles["add-acc-btn"]} style={{ border: "1px solid", width: "200px", padding: "8px" }} onClick={() => setShowModal(true)}>Добавить счет</div>
             <div className={styles["d-wrapper"]} style={{ rowGap: "30px", columnGap: "40px" }}>
                 {
-                 bankAccounts?.length && bankAccounts?.map(({ amountTotal, amountPurchases, amountSales, currencySymbol, currencyName, currencyCode }, i) => (
+                    bankAccounts?.length && bankAccounts?.map(({ _id, amountTotal, amountPurchases, amountSales, currencySymbol, currencyName, currencyCode }, i) => (
                         <BankAccount
                             key={i}
+                            id={_id}
                             amountTotal={amountTotal}
                             amountPurchases={amountPurchases}
                             amountSales={amountSales}

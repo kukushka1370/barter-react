@@ -96,7 +96,7 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     const fetchUserBankAccounts = useCallback(() => {
-        BankAccountService.fetchUserBankAccounts(user?.id).then((response) => {setBankAccounts(response.data);console.log({bankAcc: response.data})}).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching bank accounts!`));
+        BankAccountService.fetchUserBankAccounts(user?.id).then((response) => { setBankAccounts(response.data); console.log({ bankAcc: response.data }) }).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching bank accounts!`));
     }, [user]);
 
     const deleteBankAccount = useCallback((currencyCode) => {
@@ -105,7 +105,7 @@ export const AuthContextProvider = ({ children }) => {
 
     const addBankAccount = useCallback((currencyCode = "RUB") => {
         console.warn(currencyCode, user?.id);
-        BankAccountService.addBankAccount({ userId: user?.id, currencyCode: currencyCode || "RUB" }).then((response) => setBankAccounts(prev => [response.data])).catch((err) => console.error(err)).finally(() => console.log(`Added bank account!`));
+        BankAccountService.addBankAccount({ userId: user?.id, currencyCode: currencyCode || "RUB" }).then((response) => setBankAccounts(prev => [...prev, response.data])).catch((err) => console.error(err)).finally(() => console.log(`Added bank account!`));
     }, [user]);
 
     const getUser = useCallback((value = "") => {
@@ -117,8 +117,13 @@ export const AuthContextProvider = ({ children }) => {
         UserService.approveOrDecline({ userId, verdict }).then((response) => setUsers(response?.data)).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching user!`));
     }, []);
 
+    const transferMoney = useCallback((id, transferBankAccountId, transferAmount) => {
+        BankAccountService.transferMoney({ bankAccountFromId: id, bankAccountToId: transferBankAccountId, transferAmount }).then((response) => setBankAccounts(response?.data)).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching user!`));
+    }, []);
+
     return <AuthContext.Provider
         value={{
+            transferMoney,
             user,
             approveOrDecline,
             bankAccounts,
