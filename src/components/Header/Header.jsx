@@ -53,7 +53,7 @@ const Header = () => {
                         }
                     </div>
                     {
-                        user?.role?.includes("admin") && <div className={styles["arrow-container"]}>
+                        user?.role?.includes("владелец") && <div className={styles["arrow-container"]}>
                             <span
                                 className={`${styles["header-nav-link"]} ${styles["arrow"]}`}
                                 onClick={() => handleArrowClick(1)}
