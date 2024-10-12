@@ -1,8 +1,19 @@
+import { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { ShopContext } from "../../context/ShopContext";
+
 const RulesPage = () => {
+    const { user } = useContext(AuthContext);
+    const { rulesPageContent, setRulesPageContent } = useContext(ShopContext);
+
+    function createMarkup() {
+        return { __html: rulesPageContent };
+    }
+
     return (
         <div>
             <div style={{ height: "50px", background: "#cde8f5", padding: "15px", marginTop: "10px" }}><h4 style={{ color: "#397794", fontSize: "16px" }}>Правила системы 1BARTER</h4></div>
-            <div style={{ padding: "20px" }}>
+            {/* <div style={{ padding: "20px" }} dangerouslySetInnerHTML={content}>
                 <p>I. ОБЩИЕ ПОЛОЖЕНИЯ</p>
                 <ol>
                     <li>1BARTER - бартерная биржа, - система многостороннего автоматизированного бартерного обмена (далее - Система), целью которой является организация многосторонних бартерных сделок и упрощение взаиморасчетов между участниками.</li>
@@ -44,7 +55,15 @@ const RulesPage = () => {
                     <li>Участник имеет право вернуть системе <img src="img/bar.png" alt="" width="25" height="9" /> и получить взамен свою расписку или расписки других участников системы (на выбор). Для такого обмена сумма <img src="img/bar.png" alt="" width="25" height="9" /> на счету участника должна быть не менее суммы, указанной в расписке.</li>
                     <li>Администрация оставляет за собой право приостановить действие кредитной линии в следующих случаях:<br />7.1. Если участник, взявший кредит, совершает только сделки по покупке товаров в объеме более 10% от кредитного лимита при отстуствии или малом количестве продаж. В этом случае часть кредитного лимита блокируется на счету участника до совершения им продаж на сумму, аналогичную или близкую истраченной на покупки.<br />7.2. Если товар или услуга участника вызывает сомнения в ликвидности и пользе для участников системы. В этому случае часть кредитного лимита блокируется на счету участника до совершения им продаж, подтверждающих ликвидность товаров или услуг участника. При отсутсвии продаж втечение 30 дней, кредитный лимит может быть аннулирован, а расписка возвращена участнику.<br />7.3. Если участник проводит сделки, которые носят признаки недобросовестной деятельности, направленной на обман других участников системы. В этом случае кредитн…</li>
                 </ol>
-            </div>
+            </div> */}
+            <div style={{ padding: "20px" }} dangerouslySetInnerHTML={createMarkup()}></div>
+            {
+                user?.role.includes("admin") || user?.role.includes("владелец") &&
+                <div style={{ padding: "2rem" }}>
+                    <textarea value={rulesPageContent} onChange={(e) => setRulesPageContent(e.target.value)} name="" id=""></textarea>
+                    <span style={{ display: "grid", placeContent: "center", border: "1px solid", width: "100px" }}>Обновить</span>
+                </div>
+            }
         </div >
     );
 }

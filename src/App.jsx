@@ -11,16 +11,20 @@ import AuthModal from "./components/Modals/Auth/AuthModal";
 import { ChatContext } from "./context/ChatContext";
 
 const App = () => {
-  const { user, fetchUsers } = useContext(AuthContext);
+  const { user, fetchUsers, fetchUserBankAccounts } = useContext(AuthContext);
   const { getGroupChatMessages } = useContext(ChatContext);
-  const { fetchProducts, fetchLatestUpdates, getStatistics } = useContext(ShopContext);
+  const { fetchProducts, fetchLatestUpdates, getStatistics, getUserAgreement, getRules, } = useContext(ShopContext);
 
   useEffect(() => {
     fetchProducts();
     fetchUsers();
     getStatistics();
+    fetchUserBankAccounts();
     fetchLatestUpdates();
     getGroupChatMessages();
+    getUserAgreement();
+    getRules();
+    console.log("App.jsx");
   }, []);
 
   if (!user) {

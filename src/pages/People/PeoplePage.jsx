@@ -13,15 +13,15 @@ const PeoplePage = () => {
         if (users?.length) {
             setFilteredUsers([...users]);
         }
-        fetchUsers();
+        // fetchUsers();
     }, [users]);
 
     const handleSearch = async () => {
         if (searchValue.trim() === "" && users?.length) return setFilteredUsers([...users]);
         let searchedUsers = users?.filter((user) => {
-            return user.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-                user.surname.toLowerCase().includes(searchValue.toLowerCase()) ||
-                user.email.toLowerCase().includes(searchValue.toLowerCase());
+            return user.name?.toLowerCase().includes(searchValue.toLowerCase()) ||
+                user.surname?.toLowerCase().includes(searchValue.toLowerCase()) ||
+                user.email?.toLowerCase().includes(searchValue.toLowerCase());
         });
         if (searchedUsers.length !== 0) {
             return setFilteredUsers(searchedUsers);

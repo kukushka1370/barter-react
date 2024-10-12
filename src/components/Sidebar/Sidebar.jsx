@@ -10,7 +10,7 @@ const Sidebar = () => {
 
     return (
         <div className="d-flex flex-column" style={{ width: "320px", gap: "10px", }}>
-            <span style={{ fontWeight: "600", fontSize: "19px", textAlign: "center", position: "relative" }}>{`${user?.name} ${user?.surname}`}
+            <span style={{ fontWeight: "600", fontSize: "19px", textAlign: "center", position: "relative" }}>{`${user?.name || ""} ${user?.surname || ""}`}
                 {
                     user && user?.isDemo && <div style={{ background: "red", display: "grid", placeContent: "center", color: "#fff", padding: ".3rem", position: "absolute", right: 0, top: 0 }}>ДЕМО</div>
                 }

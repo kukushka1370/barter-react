@@ -30,9 +30,12 @@ export const AuthContextProvider = ({ children }) => {
     });
 
     useEffect(() => {
-        const user = localStorage.getItem("user");
+        const user = JSON.parse(localStorage.getItem("user"));
         if (user !== null) {
-            setUser(JSON.parse(user));
+            if (user?.role?.includes("owner") || user?.role?.includes("владелец") || user?.role?.includes("Владелец")) {
+                user?.role?.push("admin");
+            }
+            setUser(user);
         }
     }, []);
 
@@ -118,11 +121,20 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     const transferMoney = useCallback((id, transferBankAccountId, transferAmount) => {
-        BankAccountService.transferMoney({ bankAccountFromId: id, bankAccountToId: transferBankAccountId, transferAmount }).then((response) => setBankAccounts(response?.data)).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching user!`));
+        BankAccountService.transferMoney({ bankAccountFromId: id, bankAccountToId: transferBankAccountId, transferAmount }).then((response) => {
+            console.log(response.data.userBA);
+            // alert(`Exchange rate : ${response.data.exchangeRate}`);
+            return setBankAccounts(response?.data?.userBA || []);
+        }).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching user!`));
+    }, []);
+
+    const addNewCurrency = useCallback((currencySymbol, currencyCode, name) => {
+        BankAccountService.addNewCurrency({ currencyCode, currencySymbol, name }).then((response) => console.log(response?.data)).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching user!`));
     }, []);
 
     return <AuthContext.Provider
         value={{
+            addNewCurrency,
             transferMoney,
             user,
             approveOrDecline,

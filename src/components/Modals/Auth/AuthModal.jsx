@@ -8,6 +8,12 @@ const AuthModal = () => {
     const [registrationStep, setRegistrationStep] = useState(1);
     const { authInfo, updateAuthInfo, isAuthLoading, registerUser, loginUser, authError } = useContext(AuthContext);
 
+    const postIndexOptions = [
+        { value: 'option1', label: 'Option 1' },
+        { value: 'option2', label: 'Option 2' },
+        { value: 'option3', label: 'Option 3' },
+      ];
+
     const steps = {
         1: <>
             <Form.Group>
@@ -43,6 +49,13 @@ const AuthModal = () => {
             <Form.Group>
                 <Form.Label>Почтовый индекс</Form.Label>
                 <Form.Control value={authInfo.postcode} type="text" placeholder="Почтовый индекс" onChange={e => updateAuthInfo({ ...authInfo, postcode: e.target.value })} />
+                <select name="" id="" style={{padding: "10px", width: "100%", marginTop: ".3rem"}}>
+                    {
+                        postIndexOptions?.map((opt, i) => (
+                            <option value={opt.value} key={i}>{opt.label}</option>
+                        ))
+                    }
+                </select>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Регион</Form.Label>

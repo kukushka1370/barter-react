@@ -1,4 +1,7 @@
-export const formatDate = (dateString = "") => {
+export const formatDate = (date = "") => {
+    let dateString = date.toString();
+    if (dateString[0] === `"`) dateString = date.slice(1, -1);
+    console.log(dateString)
     const day = dateString?.slice(8, 10) || "";
     const month = dateString?.slice(5, 7) || "";
     const year = dateString?.slice(2, 4) || "";

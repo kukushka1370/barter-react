@@ -3,8 +3,11 @@ import { useContext, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
-const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amountPurchases, amountSales, depositBankAccount, deleteBankAccount, id }) => {
+const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amountPurchases, amountSales, deleteBankAccount, id }) => {
     const location = useLocation();
+
+    const { bankAccounts } = useContext(AuthContext);
+
     const { transferMoney } = useContext(AuthContext);
     const [showTransferModal, setShowTransferModal] = useState(false);
 
@@ -42,15 +45,15 @@ const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amou
             }
             <div className="d-flex justify-content-between" style={{ gap: "20px", color: "#111", borderBottom: "1px solid #3f3f3f", padding: "10px 10px 10px 5px", fontWeight: "600" }}>
                 <span>На счету:</span>
-                <span>{amountTotal || 0} {currencySymbol}</span>
+                <span>{amountTotal?.toFixed(2) || +bankAccounts[0]?.amount?.toFixed(2) || 0} {currencySymbol || bankAccounts[0]?.currencySymbol}</span>
             </div>
             <div className="d-flex justify-content-between" style={{ gap: "20px", color: "#3f3f3f", borderBottom: "1px solid #3f3f3f", padding: "10px 10px 10px 5px" }}>
                 <span>В покупках:</span>
-                <span>{amountPurchases || 0} {currencySymbol}</span>
+                <span>{amountPurchases || +bankAccounts[0]?.amountPurchases || 0} {currencySymbol || bankAccounts[0]?.currencySymbol}</span>
             </div>
             <div className="d-flex justify-content-between" style={{ gap: "20px", color: "#3f3f3f", padding: "10px 10px 10px 5px" }}>
                 <span>В продажах:</span>
-                <span>{amountSales || 0} {currencySymbol}</span>
+                <span>{amountSales || +bankAccounts[0]?.amountSales || 0} {currencySymbol || bankAccounts[0]?.currencySymbol}</span>
             </div>
         </div>
     );

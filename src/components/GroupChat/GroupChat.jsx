@@ -75,7 +75,7 @@ const GroupChat = () => {
                             <div>
                                 <div className="d-flex justify-content-between align-items-center" style={{ padding: "7px", fontSize: "15px" }}>
                                     <span style={{ fontSize: "12px" }}>{formattedDate || createdAt || ""}</span>
-                                    <span style={{ fontSize: "14px", fontWeight: "500" }}>{from || "Банк"}</span>
+                                    <span style={{ fontSize: "14px", fontWeight: "500" }}>{!from?.includes("undefined") && from || "Банк"}</span>
                                 </div>
                                 <p style={{ paddingLeft: ".7rem" }}>{message}</p>
                             </div>

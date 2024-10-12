@@ -16,4 +16,8 @@ export default class BankAccountService {
     static async transferMoney(info) {
         return $api.post("/bank/transfer", info);
     }
+
+    static async addNewCurrency(info) {
+        return $api.post("/bank/new-currency", info);
+    }
 }

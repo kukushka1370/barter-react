@@ -16,4 +16,12 @@ export default class StatisticsService {
     static async updateMax(arr) {
         return $api.post('/statistics/change-max', arr);
     }
+
+    static async getUserAgreement() {
+        return $api.get('/pages/get-user-agreement');
+    }
+
+    static async getRules() {
+        return $api.get('/pages/get-rules');
+    }
 }

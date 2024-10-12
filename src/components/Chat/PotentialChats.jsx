@@ -8,16 +8,24 @@ const PotentialChats = () => {
 
     return (
         <div className="all-users" style={{ zIndex: 7 }}>
-            {
-                potentialChats && potentialChats?.map((u, ind) => (
-                    <div className="single-user" key={ind} onClick={() => createChat(user?.id, u.id)}>
-                        {u.name}
-                        <span className={onlineUsers?.some(user => user?.userId === u?.id) ? "user-online" : ""}></span>
-                    </div>
-                ))
-            }
+            <ul>
+                {
+                    potentialChats && potentialChats?.map((u, ind) => (
+                        <li key={ind} onClick={() => createChat(user?.id, u.id)}>
+                            {u?.name}
+                            {u?.surname}
+                            <span className={onlineUsers?.some(user => user?.userId === u?.id) ? "user-online" : ""}></span>
+                        </li>
+                    ))
+                }
+            </ul>
         </div>
     );
 }
+
+{/* <div className="single-user" key={ind} onClick={() => createChat(user?.id, u.id)}>
+{u.name}
+<span className={onlineUsers?.some(user => user?.userId === u?.id) ? "user-online" : ""}></span>
+</div> */}
 
 export default PotentialChats;

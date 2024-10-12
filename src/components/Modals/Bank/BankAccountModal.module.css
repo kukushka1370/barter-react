@@ -8,6 +8,7 @@
     padding: 10px 25px 50px 25px;
     border-radius: 7px;
     width: 90%;
+    z-index: 5;
 }
 
 .modal-body {

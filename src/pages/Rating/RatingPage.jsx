@@ -19,16 +19,16 @@ const RatingPage = () => {
         let sortedUpdatedUsers = [...sortedUsers];
         switch (option) {
             case "name":
-                sortedUpdatedUsers.sort((a, b) => a.name.localeCompare(b.name));
+                sortedUpdatedUsers.sort((a, b) => a.name?.localeCompare(b.name));
                 break;
             case "surname":
-                sortedUpdatedUsers.sort((a, b) => a.surname.localeCompare(b.surname));
+                sortedUpdatedUsers.sort((a, b) => a.surname?.localeCompare(b.surname));
                 break;
             case "email":
-                sortedUpdatedUsers.sort((a, b) => a.email.localeCompare(b.email));
+                sortedUpdatedUsers.sort((a, b) => a.email?.localeCompare(b.email));
                 break;
             case "rating":
-                sortedUpdatedUsers.sort((a, b) => a.rating - b.rating);
+                sortedUpdatedUsers.sort((a, b) => a?.rating - b?.rating);
                 break;
             default:
                 break;
