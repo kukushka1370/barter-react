@@ -24,4 +24,8 @@ export default class StatisticsService {
     static async getRules() {
         return $api.get('/pages/get-rules');
     }
+
+    static async getCurrencies() {
+        return $api.get('/bank/get-currencies');
+    }
 }

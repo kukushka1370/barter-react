@@ -99,9 +99,9 @@ export const ChatContextProvider = ({ children }) => {
                 console.log(res.data);
                 const pChats = res.data.filter((u) => {
                     let isChatCreated = false;
-                    if (user.id === u.id) return false;
+                    if (user.id === u._id) return false;
                     if (userChats) {
-                        isChatCreated = userChats?.some((chat) => chat.members[0] === u.id || chat.members[1] === u.id);
+                        isChatCreated = userChats?.some((chat) => chat.members[0] === u._id || chat.members[1] === u._id);
                     }
                     return !isChatCreated;
                 });
@@ -181,8 +181,10 @@ export const ChatContextProvider = ({ children }) => {
     const createChat = useCallback(async (firstId, secondId) => {
         ChatService.createChat({ firstId, secondId })
             .then(res => {
-                setUserChats(prev => [...prev, res.data]);
-                console.log(res.data);
+                setUserChats(prev => {
+                    if (prev) return [...prev, ...res.data];
+                });
+                console.log("User Chats (Chat Context) ", res.data);
             })
             .catch(err => console.warn('An error occured while creating chat' + err));
     }, []);

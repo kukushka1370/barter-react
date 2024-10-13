@@ -17,6 +17,7 @@ import DocumentsPage from "../../pages/Documents/DocumentsPage";
 import ControlPage from "../../pages/Control/ControlPage";
 import MailingPage from "../../pages/Mailing/MailingPage";
 import RefferalsPage from "../../pages/Refferals/RefferalsPage";
+import DealsControl from "../../pages/DealsControl/DealsControl";
 
 const AppRouter = () => {
     return (
@@ -38,6 +39,7 @@ const AppRouter = () => {
                 <Route path="refferals" element={<RefferalsPage />} />
                 <Route path="mailing" element={<MailingPage />} />
                 <Route path="documents" element={<DocumentsPage />} />
+                <Route path="deals-control" element={<DealsControl />} />
                 <Route path="*" element={<HomePage />} />
             </Route>
         </Routes>

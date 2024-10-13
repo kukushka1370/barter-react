@@ -2,6 +2,7 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import ProductService from "../services/ProductService";
 import StatisticsService from "../services/StatisticsService";
 import UpdateService from "../services/UpdateService";
+import { $api } from "../http";
 
 export const ShopContext = createContext();
 
@@ -109,6 +110,21 @@ export const ShopContextProvider = ({ children }) => {
 
     const [commis, setComm] = useState([]);
     const [max, setMax] = useState([]);
+
+    const [currencies, setCurrencies] = useState({
+        "RUB": {
+            name: "Рубли",
+        },
+        "USD": {
+            name: "Доллары",
+        },
+        "EUR": {
+            name: "Евро",
+        },
+        "YUAN": {
+            name: "Юани",
+        },
+    });
 
     const [rulesPageContent, setRulesPageContent] = useState(`<div>
             <p>I. ОБЩИЕ ПОЛОЖЕНИЯ</p>
@@ -279,13 +295,13 @@ export const ShopContextProvider = ({ children }) => {
     }, []);
 
     const addProduct = useCallback((newProduct) => {
+        setIsAddProductLoading(true);
         const formData = new FormData();
         console.log(newProduct);
         Object.keys(newProduct).forEach((key) => {
             formData.append(key, newProduct[key]);
         });
         console.log([...formData.entries()])
-        setIsAddProductLoading(true);
         ProductService.addProduct(formData).then((response) => console.log(response)).catch((err) => console.error(err)).finally(() => setIsAddProductLoading(false));
     }, []);
 
@@ -309,16 +325,27 @@ export const ShopContextProvider = ({ children }) => {
 
     const getUserAgreement = () => {
         // alert(max);
-        StatisticsService.getUserAgreement().then((res) => { console.log(res.data); setUserAgreementPageContent(`${res.data}`) });
+        StatisticsService.getUserAgreement().then((res) => { console.log("res.data"); setUserAgreementPageContent(`${res.data}`) });
     };
 
     const getRules = () => {
         // alert(max);
-        StatisticsService.getRules().then((res) => { console.log(res.data); setRulesPageContent(`${res.data}`) });
+        StatisticsService.getRules().then((res) => { console.log("res.data"); setRulesPageContent(`${res.data}`) });
+    };
+
+    const getCurrencies = async () => {
+        // alert(max);
+        const { data } = await $api.get("/bank/get-currencies");
+        const result = data.reduce((acc, current) => {
+            acc[current.currencyCode] = { name: current.name };
+            return acc;
+        }, {});
+        setCurrencies(result);
     };
 
     return <ShopContext.Provider
         value={{
+            getCurrencies,
             getUserAgreement,
             getRules,
             updateCommission,
@@ -343,6 +370,7 @@ export const ShopContextProvider = ({ children }) => {
             setRulesPageContent,
             userAgreementPageContent,
             setUserAgreementPageContent,
+            currencies,
         }}
     >
         {children}

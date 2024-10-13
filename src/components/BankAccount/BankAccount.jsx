@@ -14,19 +14,33 @@ const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amou
     const [transferBankAccountId, setTransferBankAccountId] = useState("");
     const [transferAmount, setTransferAmount] = useState(0);
 
+    const copyId = async (id) => {
+        if (!navigator.clipboard) {
+            alert('Копирование в буфер обмена не поддерживается в вашем браузере');
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(id);
+            alert(`Айди счета скопирован`);
+        } catch (error) {
+            console.error('Failed to copy text: ', error);
+        }
+    };
+
     return (
         <div style={{ width: "250px", position: "relative", boxShadow: "0px 5px 10px 0px rgba(0, 0, 0, 0.5)", padding: location.pathname === "/" ? "" : "1rem", borderRadius: "5px" }}>
             {
-                showTransferModal && <div style={{ position: "absolute", height: "300px", background: "grey", padding: "1rem", display: "flex", gap: "1rem", flexDirection: "column" }}>
+                showTransferModal && <div style={{ position: "absolute", height: "300px", width: "500px", zIndex: "5", background: "grey", padding: ".2rem", display: "flex", gap: "1rem", flexDirection: "column" }}>
                     <span style={{ cursor: "pointer" }} onClick={() => setShowTransferModal(false)}>X</span>
                     <div style={{ display: "flex", gap: "1rem", flexDirection: "column" }}>
-                        <input value={transferBankAccountId} onChange={(e) => setTransferBankAccountId(e.target.value)} placeholder="Введите уникальный ключ для перевода" type="text" />
-                        <input value={transferAmount} onChange={(e) => setTransferAmount(e.target.value)} placeholder="Сумма для перевода" type="text" />
+                        <input  style={{width: "100%", padding: ".2rem", fontSize: "13px"}} value={transferBankAccountId} onChange={(e) => setTransferBankAccountId(e.target.value)} placeholder="Ваш универсальный ключ для перевода" type="text" />
+                        <input  style={{width: "100%", padding: ".2rem", fontSize: "13px"}} value={transferAmount} onChange={(e) => setTransferAmount(e.target.value)} placeholder="Сумма для перевода" type="text" />
                         <span onClick={() => transferMoney(id, transferBankAccountId, transferAmount)} style={{ cursor: "pointer", padding: ".6rem", border: "1px solid", display: "grid", placeContent: "center", color: "#fff" }}>Перевести</span>
                     </div>
                     <div className="d-flex" style={{ gap: "1rem", marginTop: "1rem", alignItems: "center" }}>
-                        <span>Id вашего счета :</span>
-                        <span style={{ color: "greenyellow", cursor: "pointer" }} onClick={() => { navigator?.clipboard?.writeText(id || ""); alert(`Айди счета скопирован`) }}>{id}</span>
+                        <span style={{fontSize: "15px"}}>Id вашего счета :</span>
+                        <span style={{ color: "greenyellow", cursor: "pointer" }} onClick={() => copyId(id)}>{id}</span>
                     </div>
                 </div>
             }

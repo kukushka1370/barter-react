@@ -4,11 +4,14 @@ import AuthService from "../services/AuthService";
 import UserService from "../services/UserService";
 import BankAccountService from "../services/BankAccountService";
 import AccountService from "../services/AccountService";
+import { $api } from "../http";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [userTransfers, setUserTransfers] = useState([]);
+    const [transfers, setTransfers] = useState([]);
     const [bankAccounts, setBankAccounts] = useState([
         { amountTotal: "0", amountPurchases: "0", amountSales: "0", currencySymbol: "₽", currencyName: "Рубли", currencyCode: "RUB" },
         // { amountTotal: "0", amountPurchases: "0", amountSales: "0", currencySymbol: "$", currency: "Доллары", currencyCode: "USD" },
@@ -132,8 +135,21 @@ export const AuthContextProvider = ({ children }) => {
         BankAccountService.addNewCurrency({ currencyCode, currencySymbol, name }).then((response) => console.log(response?.data)).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching user!`));
     }, []);
 
+    const getUserTransfers = useCallback(() => {
+        $api.get(`/bank/get-user-transfers/${JSON.parse(localStorage.getItem("user")).id}`).then(res => setUserTransfers(res.data));
+        console.log({userTransfers})
+    }, [user?.id]);
+
+    const getAllTransfers = useCallback(() => {
+        $api.get("/bank/get-all-transfers").then(res => setTransfers(res.data));
+    }, []);
+
     return <AuthContext.Provider
         value={{
+            getUserTransfers,
+            getAllTransfers,
+            transfers,
+            userTransfers,
             addNewCurrency,
             transferMoney,
             user,

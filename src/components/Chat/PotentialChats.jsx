@@ -8,13 +8,14 @@ const PotentialChats = () => {
 
     return (
         <div className="all-users" style={{ zIndex: 7 }}>
-            <ul>
+            <ul style={{ height: "400px", overflowY: "auto", listStyleType: "none" }}>
                 {
                     potentialChats && potentialChats?.map((u, ind) => (
-                        <li key={ind} onClick={() => createChat(user?.id, u.id)}>
+                        <li key={ind} onClick={() => createChat(user?.id, u?._id)}>
                             {u?.name}
+                            {" "}
                             {u?.surname}
-                            <span className={onlineUsers?.some(user => user?.userId === u?.id) ? "user-online" : ""}></span>
+                            <span className={onlineUsers?.some(user => user?.userId === u?._id) ? "user-online" : ""}></span>
                         </li>
                     ))
                 }

@@ -64,7 +64,7 @@ const Header = () => {
                                     <li><Link onClick={() => handleLinkClick()} to="mailing" className={styles["header-nav-link"]}>Рассылка</Link></li>
                                     {/* <li><Link onClick={() => handleLinkClick()} to="games" className={styles["header-nav-link"]}>Предложения системе</Link></li> */}
                                     <li><Link onClick={() => handleLinkClick()} to="control" className={styles["header-nav-link"]}>Управление</Link></li>
-                                    <li><Link onClick={() => handleLinkClick()} to="deals" className={styles["header-nav-link"]}>Контроль сделок</Link></li>
+                                    <li><Link onClick={() => handleLinkClick()} to="deals-control" className={styles["header-nav-link"]}>Контроль сделок</Link></li>
                                 </ul>
                             }
                         </div>

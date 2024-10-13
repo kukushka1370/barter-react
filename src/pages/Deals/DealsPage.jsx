@@ -4,46 +4,56 @@ import BankAccount from "../../components/BankAccount/BankAccount";
 import BankAccountModal from "../../components/Modals/Bank/BankAccountModal";
 import { AuthContext } from "../../context/AuthContext";
 import { $api } from "../../http";
+import { ShopContext } from "../../context/ShopContext";
+import { formatDate } from "../../utils/utils";
 
 const DealsPage = () => {
-    const { bankAccounts, deleteBankAccount, addBankAccount, fetchUserBankAccounts, user, addNewCurrency } = useContext(AuthContext);
+    const { bankAccounts, deleteBankAccount, addBankAccount, fetchUserBankAccounts, user, addNewCurrency, userTransfers } = useContext(AuthContext);
 
     const [showModal, setShowModal] = useState(false);
+    const [showModal2, setShowModal2] = useState(false);
+
+    const [obPlatUserId, setObPlatUserId] = useState("");
+    const [obPlatSumma, setObPlatSumma] = useState("");
 
     const [newCurrencySymbol, setNewCurrencySymbol] = useState("");
     const [newCurrencyCode, setNewCurrencyCode] = useState("");
     const [newCurrencyName, setNewCurrencyName] = useState("");
 
-    const [currencies, setCurrencies] = useState({
-        "RUB": {
-            name: "Рубли",
-        },
-        "USD": {
-            name: "Доллары",
-        },
-        "EUR": {
-            name: "Евро",
-        },
-        "YUAN": {
-            name: "Юани",
-        },
-    });
+    // const [currencies, setCurrencies] = useState({
+    //     "RUB": {
+    //         name: "Рубли",
+    //     },
+    //     "USD": {
+    //         name: "Доллары",
+    //     },
+    //     "EUR": {
+    //         name: "Евро",
+    //     },
+    //     "YUAN": {
+    //         name: "Юани",
+    //     },
+    // });
+
+    const { currencies, getCurrencies } = useContext(ShopContext);
 
     useEffect(() => {
         fetchUserBankAccounts();
+        getCurrencies();
     }, []);
 
-    useEffect(() => {
-        const fetchCurrencies = async () => {
-            try {
-              const response = await $api.get("/bank/get-currencies");
-              setCurrencies(response.data);
-            } catch (error) {
-              console.error(error);
-            }
-          };
-          fetchCurrencies();
-    }, []);
+    // useEffect(() => {
+    //     const fetchCurrencies = async () => {
+    //         try {
+    //           const response = await $api.get("/bank/get-currencies");
+    //           console.log(response.data);
+    //         //   setCurrencies(response.data);
+    //         } catch (error) {
+    //           console.error(error);
+    //         }
+    //       };
+    //       fetchCurrencies();
+    // }, []);
 
     const handleDeleteBankAccount = (currencyCode) => {
         alert("Счет будет моментально удален без возврата средств!");
@@ -55,10 +65,21 @@ const DealsPage = () => {
             {
                 showModal && <BankAccountModal onClose={() => setShowModal(false)} addBankAccount={addBankAccount} currencies={currencies} />
             }
+            {
+                showModal2 && <div style={{ position: "absolute", background: "grey", height: "400px", width: "22rem", zIndex: 5 }}>
+                    <span style={{ cursor: "pointer", padding: "1rem", color: "#fff" }} onClick={() => setShowModal2(false)}>X</span>
+                    <div style={{ display: "flex", flexDirection: "column", padding: "1rem", gap: "1rem", fontSize: "15px" }}>
+                        <input value={obPlatUserId} onChange={(e) => setObPlatUserId(e.target.value)} type="text" placeholder="Введите Id пользователя" />
+                        <input value={obPlatSumma} onChange={(e) => setObPlatSumma(e.target.value)} type="text" placeholder="Введите сумму обещанного платежа" />
+                        <span onClick={() => alert(`И что дальше?\n${obPlatUserId} на сумму ${obPlatSumma}`)} style={{ display: "grid", placeContent: "center", color: "#fff", border: "1px solid", padding: "1rem", cursor: "pointer" }}>Открыть обещанный платеж</span>
+                    </div>
+                </div>
+            }
             <div className="d-flex align-items-center" style={{ background: "linear-gradient(to bottom, #428bca 0%, #357ebd 100%)", height: "40px", borderTopLeftRadius: "3px", borderTopRightRadius: "3px", color: "#fff", paddingLeft: "20px", marginBottom: "30px" }}>
                 <span>Мой счет и сделки</span>
             </div>
             <div className={styles["add-acc-btn"]} style={{ border: "1px solid", width: "200px", padding: "8px" }} onClick={() => setShowModal(true)}>Добавить счет</div>
+            <div className={styles["add-acc-btn"]} style={{ border: "1px solid", width: "200px", padding: "8px" }} onClick={() => setShowModal2(true)}>Обещанный платеж</div>
             <div className={styles["d-wrapper"]} style={{ rowGap: "30px", columnGap: "40px" }}>
                 {
                     bankAccounts?.length && bankAccounts?.map(({ _id, amount, amountPurchases, amountSales, currencySymbol, currencyName, currencyCode }, i) => (
@@ -90,6 +111,18 @@ const DealsPage = () => {
                     >Добавить валюту</span>
                 </div>
             }
+            <div className="d-flex flex-column" style={{ width: "23rem", gap: "1rem" }}>
+                {
+                    userTransfers?.map((el, i) => {
+                        const dd = formatDate(el?.createdAt);
+                        return <span
+                            style={{ fontWeight: "500", background: "lightgrey", padding: "1rem", width: "100%", display: "flex", flexWrap: "wrap", boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)" }}
+                            key={i}>
+                            Перевод на сумму {el?.amount} {el?.currencyFrom} на счет {el?.recepientId} статус - <span style={{ color: "green", margin: "0 2px" }}>Успешно</span> {dd || "Сегодня, 20:32"}
+                        </span>
+                    })
+                }
+            </div>
         </div>
     );
 }
