@@ -12,6 +12,8 @@ export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [userTransfers, setUserTransfers] = useState([]);
     const [transfers, setTransfers] = useState([]);
+    const [displayRatingModal, setDisplayRatingModal] = useState(false);
+    const [showTransferModal, setShowTransferModal] = useState(false);
     const [bankAccounts, setBankAccounts] = useState([
         { amountTotal: "0", amountPurchases: "0", amountSales: "0", currencySymbol: "₽", currencyName: "Рубли", currencyCode: "RUB" },
         // { amountTotal: "0", amountPurchases: "0", amountSales: "0", currencySymbol: "$", currency: "Доллары", currencyCode: "USD" },
@@ -123,10 +125,14 @@ export const AuthContextProvider = ({ children }) => {
         UserService.approveOrDecline({ userId, verdict }).then((response) => setUsers(response?.data)).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching user!`));
     }, []);
 
-    const transferMoney = useCallback((id, transferBankAccountId, transferAmount) => {
-        BankAccountService.transferMoney({ bankAccountFromId: id, bankAccountToId: transferBankAccountId, transferAmount }).then((response) => {
+    const transferMoney = useCallback(async (id, transferBankAccountId, transferAmount) => {
+        await BankAccountService.transferMoney({ bankAccountFromId: id, bankAccountToId: transferBankAccountId, transferAmount }).then((response) => {
             console.log(response.data.userBA);
             // alert(`Exchange rate : ${response.data.exchangeRate}`);
+            if (response?.data?.internationalTransfer) {
+                setDisplayRatingModal(true);
+            }
+            setShowTransferModal(true);
             return setBankAccounts(response?.data?.userBA || []);
         }).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching user!`));
     }, []);
@@ -136,8 +142,8 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     const getUserTransfers = useCallback(() => {
-        $api.get(`/bank/get-user-transfers/${JSON.parse(localStorage.getItem("user")).id}`).then(res => setUserTransfers(res.data));
-        console.log({userTransfers})
+        $api.get(`/bank/get-user-transfers/${JSON.parse(localStorage.getItem("user"))?.id}`).then(res => setUserTransfers(res.data));
+        console.log({ userTransfers })
     }, [user?.id]);
 
     const getAllTransfers = useCallback(() => {
@@ -169,6 +175,10 @@ export const AuthContextProvider = ({ children }) => {
             fetchUsers,
             getUser,
             udpatePassword,
+            displayRatingModal,
+            setDisplayRatingModal,
+            showTransferModal,
+            setShowTransferModal,
         }}
     >
         {children}

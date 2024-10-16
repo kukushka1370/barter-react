@@ -24,6 +24,7 @@ const General = () => {
         "Город": `${user?.region}`,
         "Почтовый индекс": `${user?.postcode}`,
         "E-mail": `${user?.email}`,
+        "Id участника": `${user?.id || user?._id || ""}`,
         "Сайт": user?.website || <input type="text" placeholder="Добавить" className={styles["invis-input"]} />,
         "Телефон": `${user?.phoneNumber}`,
         "Доп. телефон": user?.additionalPhoneNumber || <input type="text" placeholder="Добавить" className={styles["invis-input"]} />,
@@ -42,7 +43,7 @@ const General = () => {
                             className={styles["list-item"]}
                             key={index}
                         >
-                            <div style={{ padding: "7px 0", display: "flex", justifyContent: "space-between", alignItems: "center", width: "320px" }}>
+                            <div style={{ padding: "7px 0", display: "flex", justifyContent: "space-between", alignItems: "center", width: "320px", overflowY: "auto" }}>
                                 <span>{field} :</span>
                                 <span style={{ maxWidth: "150px", width: "auto", fontSize: field == "Реферальная ссылка" ? "10px" : "16px" }}>{formFields[field]}</span>
                             </div>

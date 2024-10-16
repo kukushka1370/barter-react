@@ -8,10 +8,13 @@ import { ShopContext } from "../../context/ShopContext";
 import { formatDate } from "../../utils/utils";
 
 const DealsPage = () => {
-    const { bankAccounts, deleteBankAccount, addBankAccount, fetchUserBankAccounts, user, addNewCurrency, userTransfers } = useContext(AuthContext);
+    const { bankAccounts, deleteBankAccount, addBankAccount, fetchUserBankAccounts, user, addNewCurrency, userTransfers, displayRatingModal, setDisplayRatingModal, showTransferModal, setShowTransferModal } = useContext(AuthContext);
 
-    const [showModal, setShowModal] = useState(false);
     const [showModal2, setShowModal2] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+
+    const [rating, setRating] = useState(null);
+    const [comment, setComment] = useState("");
 
     const [obPlatUserId, setObPlatUserId] = useState("");
     const [obPlatSumma, setObPlatSumma] = useState("");
@@ -60,6 +63,15 @@ const DealsPage = () => {
         return deleteBankAccount(currencyCode);
     };
 
+    const createCredit = () => {
+        $api.post("/bank/new-credit", { userId: user?.id || user?._id, bankId: obPlatUserId, amount: obPlatSumma })
+        .then((res) => {
+            alert(`Обещанный платеж открыт!`);
+            console.log(res.data);
+        })
+        .catch((err) => alert(err.message));
+    };
+
     return (
         <div className={styles["deals-container"]}>
             {
@@ -71,8 +83,32 @@ const DealsPage = () => {
                     <div style={{ display: "flex", flexDirection: "column", padding: "1rem", gap: "1rem", fontSize: "15px" }}>
                         <input value={obPlatUserId} onChange={(e) => setObPlatUserId(e.target.value)} type="text" placeholder="Введите Id пользователя" />
                         <input value={obPlatSumma} onChange={(e) => setObPlatSumma(e.target.value)} type="text" placeholder="Введите сумму обещанного платежа" />
-                        <span onClick={() => alert(`И что дальше?\n${obPlatUserId} на сумму ${obPlatSumma}`)} style={{ display: "grid", placeContent: "center", color: "#fff", border: "1px solid", padding: "1rem", cursor: "pointer" }}>Открыть обещанный платеж</span>
+                        <span onClick={() => createCredit()} style={{ display: "grid", placeContent: "center", color: "#fff", border: "1px solid", padding: "1rem", cursor: "pointer" }}>Открыть обещанный платеж</span>
                     </div>
+                </div>
+            }
+            {
+                displayRatingModal && <div style={{ gap: "1rem", position: "absolute", background: "grey", zIndex: 7, height: "70vh", width: "80vw", display: "flex", flexDirection: "column", alignItems: "self-start", padding: "1rem" }}>
+                    <h2>Оцените пользователя</h2>
+                    <div className={styles["rating"]}>
+                        <input onChange={(e) => setRating(e.target.value)} value="5" name="rating" id="star5" type="radio" />
+                        <label htmlFor="star5"></label>
+                        <input onChange={(e) => setRating(e.target.value)} value="4" name="rating" id="star4" type="radio" />
+                        <label htmlFor="star4"></label>
+                        <input onChange={(e) => setRating(e.target.value)} value="3" name="rating" id="star3" type="radio" />
+                        <label htmlFor="star3"></label>
+                        <input onChange={(e) => setRating(e.target.value)} value="2" name="rating" id="star2" type="radio" />
+                        <label htmlFor="star2"></label>
+                        <input onClick={(e) => alert(e.target.value)} value="1" name="rating" id="star1" type="radio" />
+                        <label htmlFor="star1"></label>
+                    </div>
+                    <textarea value={comment} onChange={(e) => setComment(e.target.value)} name="" id=""></textarea>
+                    <span
+                        onClick={() => {
+                            setDisplayRatingModal(false);
+                            alert(comment, " Rating : ", rating)
+                        }}
+                        style={{ cursor: "pointer", display: "grid", placeContent: "center", background: "green", color: "#fff", padding: ".4rem", borderRadius: "5px" }}>Оставить отзыв</span>
                 </div>
             }
             <div className="d-flex align-items-center" style={{ background: "linear-gradient(to bottom, #428bca 0%, #357ebd 100%)", height: "40px", borderTopLeftRadius: "3px", borderTopRightRadius: "3px", color: "#fff", paddingLeft: "20px", marginBottom: "30px" }}>
