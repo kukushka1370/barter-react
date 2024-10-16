@@ -114,9 +114,10 @@ export const ChatContextProvider = ({ children }) => {
     }, [userChats, user]);
 
     useEffect(() => {
-        if (user?._id) {
+        const userId = user?._id || user?.id;
+        if (userId) {
             setIsUserChatsLoading(true);
-            ChatService.fetchChats(user._id).then(res => {
+            ChatService.fetchChats(userId).then(res => {
                 setUserChats(res.data);
             }).catch(err => {
                 console.log(err);
