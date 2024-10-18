@@ -65,11 +65,11 @@ const DealsPage = () => {
 
     const createCredit = () => {
         $api.post("/bank/new-credit", { userId: user?.id || user?._id, bankId: obPlatUserId, amount: obPlatSumma })
-        .then((res) => {
-            alert(`Обещанный платеж открыт!`);
-            console.log(res.data);
-        })
-        .catch((err) => alert(err.message));
+            .then((res) => {
+                alert(`Обещанный платеж открыт!`);
+                console.log(res.data);
+            })
+            .catch((err) => alert(err.message));
     };
 
     return (
@@ -104,8 +104,11 @@ const DealsPage = () => {
                     </div>
                     <textarea value={comment} onChange={(e) => setComment(e.target.value)} name="" id=""></textarea>
                     <span
-                        onClick={() => {
+                        onClick={async() => {
                             setDisplayRatingModal(false);
+                            await $api.post("/user/update-rating", { rating, userId: user?.id, review: comment })
+                                .then(res => console.log(res.data))
+                                .catch(err => console.error(err.message));
                             alert(comment, " Rating : ", rating)
                         }}
                         style={{ cursor: "pointer", display: "grid", placeContent: "center", background: "green", color: "#fff", padding: ".4rem", borderRadius: "5px" }}>Оставить отзыв</span>
@@ -152,7 +155,7 @@ const DealsPage = () => {
                     userTransfers?.map((el, i) => {
                         const dd = formatDate(el?.createdAt);
                         return <span
-                            style={{ fontWeight: "500", background: "lightgrey", padding: "1rem", width: "100%", display: "flex", flexWrap: "wrap", boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)" }}
+                            style={{ fontWeight: "500", background: "lightgrey", padding: ".5rem", width: "100%", display: "flex", flexWrap: "wrap", boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)" }}
                             key={i}>
                             Перевод на сумму {el?.amount} {el?.currencyFrom} на счет {el?.recepientId} статус - <span style={{ color: "green", margin: "0 2px" }}>Успешно</span> {dd || "Сегодня, 20:32"}
                         </span>

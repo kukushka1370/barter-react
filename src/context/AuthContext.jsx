@@ -96,7 +96,7 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     const fetchUsers = useCallback(() => {
-        UserService.fetchUsers().then((response) => setUsers(response.data)).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching users!`));
+        UserService.fetchUsers().then((response) => {setUsers(response.data);console.log(response.data)}).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching users!`));
     }, []);
 
     const udpatePassword = useCallback(() => {

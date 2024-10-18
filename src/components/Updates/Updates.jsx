@@ -23,7 +23,7 @@ const Updates = () => {
                             className={styles["list-item"]}
                             key={index}
                         >
-                            <div style={{ padding: "7px 0" }}>
+                            <div style={{ padding: "3px 0" }}>
                                 <span style={{ fontSize: "15px" }}>{formattedDate || createdAt || ""}</span>
                                 <p>{msg}</p>
                             </div>

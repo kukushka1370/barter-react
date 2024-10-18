@@ -11,7 +11,7 @@ const DealsControl = () => {
     return (
         <div className={styles["deals-container"]}>
             {
-                [...updates, ...transfers]?.map((el, i) => {
+                [...transfers]?.map((el, i) => {
                     const dd = formatDate(el?.createdAt)
                     return <span style={{ background: "lightgrey", padding: "10px", borderRadius: "10px" }} key={i}>{el?.msg || `Совершен успешный перевод на сумму в ${el?.amount}${el?.currencyFrom}\nОтправитель : ${el?.userId}\nПолучатель : ${el?.recepientId}`} {dd}</span>
                 })
