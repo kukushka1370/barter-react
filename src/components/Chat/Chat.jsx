@@ -1,12 +1,20 @@
 import avatar from "../../assets/avtr.svg";
 import { Stack } from "react-bootstrap";
 import { useFetchRecipientUser } from "../../hooks/useFetchRecipient";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ChatContext } from "../../context/ChatContext";
 
 const Chat = ({ chat, user }) => {
     const { recipientUser } = useFetchRecipientUser(chat, user);
     const { onlineUsers } = useContext(ChatContext);
+
+    useEffect(() => {
+        // const recipientId = currentChat?.members.filter((el) => el !== user?.id)[0];
+        // const recip = users.find(us => us?._id === recipientId);
+        // setRecipient(recip);
+        // console.log(recip)
+        console.log({chat});
+    }, [user, chat]);
 
     const isOnline = onlineUsers?.some(user => user?.userId === recipientUser?._id)
 
@@ -16,8 +24,8 @@ const Chat = ({ chat, user }) => {
                 <div className="me-2">
                     <img src={avatar} height={34} alt="avatar" />
                 </div>
-                <div className="name">{recipientUser?.name}</div>
-                <div className="text">Text message</div>
+                <div className="name" style={{color: "black"}}>{recipientUser?.name || ""}{" "}{recipientUser?.name || ""}</div>
+                {/* <div className="text">Text message</div> */}
             </div>
             <div className="d-flex flex-column align-items-end">
                 {/* <div className="date">12/12/2024</div> */}

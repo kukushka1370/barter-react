@@ -143,9 +143,13 @@ export const ChatContextProvider = ({ children }) => {
         if (!textMessage) return;
         MessageService.createMessage({ chatId: currentChatId, senderId, text: textMessage })
             .then(res => {
+                console.log("======================================");
+                console.log("======================================");
+                console.log("======================================");
+                const temp = res.data;
                 console.log(res.data);
                 setNewMessage(res.data);
-                setMessages(prev => [...prev, newMessage]);
+                setMessages(prev => [...prev, temp]);
                 setTextMessage("");
             })
             .catch(err => {
@@ -183,7 +187,7 @@ export const ChatContextProvider = ({ children }) => {
         ChatService.createChat({ firstId, secondId })
             .then(res => {
                 setUserChats(prev => {
-                    if (prev) return [...prev, ...res.data];
+                    if (prev) return [...prev, res.data];
                 });
                 console.log("User Chats (Chat Context) ", res.data);
             })
