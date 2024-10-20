@@ -18,8 +18,12 @@ import ControlPage from "../../pages/Control/ControlPage";
 import MailingPage from "../../pages/Mailing/MailingPage";
 import RefferalsPage from "../../pages/Refferals/RefferalsPage";
 import DealsControl from "../../pages/DealsControl/DealsControl";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const AppRouter = () => {
+    const { user } = useContext(AuthContext);
+
     return (
         <Routes>
             <Route path="/" element={<Layout />} >
@@ -35,7 +39,7 @@ const AppRouter = () => {
                 <Route path="user-agreement" element={<UserAgreementPage />} />
                 <Route path="rules" element={<RulesPage />} />
                 <Route path="statistics" element={<StatisticsPage />} />
-                <Route path="control" element={<ControlPage />} />
+                <Route path="control" element={user?.role?.includes("owner") ? <ControlPage /> : <HomePage />} />
                 <Route path="refferals" element={<RefferalsPage />} />
                 <Route path="mailing" element={<MailingPage />} />
                 <Route path="documents" element={<DocumentsPage />} />
