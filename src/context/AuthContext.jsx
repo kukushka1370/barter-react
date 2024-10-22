@@ -12,6 +12,7 @@ export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [userTransfers, setUserTransfers] = useState([]);
     const [transfers, setTransfers] = useState([]);
+    const [toToId, setToToId] = useState("");
     const [displayRatingModal, setDisplayRatingModal] = useState(false);
     const [showTransferModal, setShowTransferModal] = useState(false);
     const [bankAccounts, setBankAccounts] = useState([
@@ -126,11 +127,12 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     const transferMoney = useCallback(async (id, transferBankAccountId, transferAmount) => {
-        await BankAccountService.transferMoney({ bankAccountFromId: id, bankAccountToId: transferBankAccountId, transferAmount }).then((response) => {
+        await BankAccountService.transferMoney({ bankAccountFromId: id, bankAccountToId: transferBankAccountId.trim(), transferAmount }).then((response) => {
             console.log(response.data.userBA);
             // alert(`Exchange rate : ${response.data.exchangeRate}`);
             if (response?.data?.internationalTransfer) {
                 setDisplayRatingModal(true);
+                setToToId(response.data.bankAccountTo.userId);
             }
             setShowTransferModal(true);
             return setBankAccounts(response?.data?.userBA || []);
@@ -179,6 +181,7 @@ export const AuthContextProvider = ({ children }) => {
             setDisplayRatingModal,
             showTransferModal,
             setShowTransferModal,
+            toToId,
         }}
     >
         {children}

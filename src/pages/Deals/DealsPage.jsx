@@ -8,7 +8,7 @@ import { ShopContext } from "../../context/ShopContext";
 import { formatDate } from "../../utils/utils";
 
 const DealsPage = () => {
-    const { bankAccounts, deleteBankAccount, addBankAccount, fetchUserBankAccounts, user, addNewCurrency, userTransfers, displayRatingModal, setDisplayRatingModal, showTransferModal, setShowTransferModal } = useContext(AuthContext);
+    const { bankAccounts, toToId, deleteBankAccount, addBankAccount, fetchUserBankAccounts, user, addNewCurrency, userTransfers, displayRatingModal, setDisplayRatingModal, showTransferModal, setShowTransferModal } = useContext(AuthContext);
 
     const [showModal2, setShowModal2] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -106,7 +106,7 @@ const DealsPage = () => {
                     <span
                         onClick={async() => {
                             setDisplayRatingModal(false);
-                            await $api.post("/user/update-rating", { rating, userId: user?.id, review: comment })
+                            await $api.post("/users/update-rating", { rating, userId: toToId, review: comment })
                                 .then(res => console.log(res.data))
                                 .catch(err => console.error(err.message));
                             alert(comment, " Rating : ", rating)
