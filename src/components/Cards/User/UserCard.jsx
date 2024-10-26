@@ -15,8 +15,8 @@ const UserCard = ({ userInfo }) => {
             }
             <ProgressBar
                 variant={userInfo.rating > 80 ? "success" : (userInfo.rating > 50 ? "warning" : "danger")}
-                label={`${userInfo.rating}%`}
-                now={userInfo.rating}
+                label={`${Math.round(userInfo.rating)}%`}
+                now={Math.round(userInfo.rating)}
                 style={{ height: "17px", borderRadius: "8px", fontSize: "12px", width: "80%" }}
             />
             <div className="d-flex flex-wrap justify-content-evenly" style={{ gap: "5px" }}>
@@ -25,7 +25,7 @@ const UserCard = ({ userInfo }) => {
                 <Link to={`mailto:${userInfo?.email}`} className="d-flex align-items-center justify-content-center" style={{ background: "linear-gradient(rgb(126 126 126) 0%, rgb(52 52 52) 100%)", borderRadius: "7px", padding: "5px", textDecoration: "none", color: "#fff", width: "110px", fontSize: ".9em", fontWeight: "500" }}>Почта</Link>
                 <Link to={`/messages`} className="d-flex align-items-center justify-content-center" style={{ background: "#428bca", borderRadius: "7px", padding: "5px", textDecoration: "none", color: "#fff", width: "110px", fontSize: ".9em", fontWeight: "500" }}>Сообщение</Link>
                 {
-                    user?.role?.includes("admin") && <div className="d-flex" style={{ gap: "5px" }}>
+                    user?.role?.includes("admin") && userInfo?.isDemo && <div className="d-flex" style={{ gap: "5px" }}>
                         <div className="d-flex align-items-center justify-content-center" onClick={() => approveOrDecline(userInfo?.id || userInfo?._id, true)} style={{ cursor: "pointer", background: "rgb(6 183 0)", borderRadius: "7px", padding: "5px", textDecoration: "none", color: "#fff", width: "110px", fontSize: ".9em", fontWeight: "500" }}>Одобрить</div>
                         <div className="d-flex align-items-center justify-content-center" onClick={() => approveOrDecline(userInfo?.id || userInfo?._id, false)} style={{ cursor: "pointer", background: "rgb(188 13 13)", borderRadius: "7px", padding: "5px", textDecoration: "none", color: "#fff", width: "110px", fontSize: ".9em", fontWeight: "500" }}>Отказать</div>
                     </div>

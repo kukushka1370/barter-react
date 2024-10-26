@@ -10,6 +10,7 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [postIndexes, setPostIndexes] = useState([{ val: "119389" }, { val: "119329" }, { val: "149389" }, { val: "119386" }]);
     const [userTransfers, setUserTransfers] = useState([]);
     const [transfers, setTransfers] = useState([]);
     const [toToId, setToToId] = useState("");
@@ -97,7 +98,7 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     const fetchUsers = useCallback(() => {
-        UserService.fetchUsers().then((response) => {setUsers(response.data);console.log(response.data)}).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching users!`));
+        UserService.fetchUsers().then((response) => { setUsers(response.data); console.log(response.data) }).catch((err) => console.error(err)).finally(() => console.log(`Finished fetching users!`));
     }, []);
 
     const udpatePassword = useCallback(() => {
@@ -182,6 +183,8 @@ export const AuthContextProvider = ({ children }) => {
             showTransferModal,
             setShowTransferModal,
             toToId,
+            postIndexes,
+            setPostIndexes,
         }}
     >
         {children}

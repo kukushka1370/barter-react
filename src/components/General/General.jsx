@@ -13,9 +13,14 @@ const General = () => {
         setShowPasswordModal(false);
     };
 
+    const role = user?.role.includes("owner") || user?.role.includes("владелец") ? "Владелец" : 
+    (user?.role.includes("admin") || user?.role.includes("администратор")) ? "Администратор" :
+    (user?.role.includes("user") || user?.role.includes("пользователь") || user?.role.includes("участник")) ? "Участник" :
+     user?.role;
+
     const formFields = {
         "Ментор": "нет",
-        "Статус": `${user?.role}`,
+        "Статус": `${role}`,
         "Пароль": <div
             className="d-flex align-items-center justify-content-center"
             onClick={() => setShowPasswordModal(!showPasswordModal)}
@@ -43,9 +48,9 @@ const General = () => {
                             className={styles["list-item"]}
                             key={index}
                         >
-                            <div style={{ padding: "7px 0", display: "flex", justifyContent: "space-between", alignItems: "center", width: "320px", overflowY: "auto" }}>
+                            <div style={{ padding: "7px 0", display: "flex", gap: "10px", justifyContent: "space-between", alignItems: "center", width: "320px", overflowY: "auto" }}>
                                 <span>{field} :</span>
-                                <span style={{ maxWidth: "150px", width: "auto", fontSize: field == "Реферальная ссылка" ? "10px" : "16px" }}>{formFields[field]}</span>
+                                <span style={{ maxWidth: "250px", width: "auto", fontSize: field == "Реферальная ссылка" ? "16px" : "16px" }}>{formFields[field]}</span>
                             </div>
                         </li>
                     ))

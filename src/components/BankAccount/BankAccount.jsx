@@ -7,6 +7,7 @@ const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amou
     const location = useLocation();
 
     const { bankAccounts } = useContext(AuthContext);
+    const [t1, setT1] = useState(true);
 
     const { transferMoney } = useContext(AuthContext);
     const [showTransferModal, setShowTransferModal] = useState(false);
@@ -15,8 +16,10 @@ const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amou
     const [transferAmount, setTransferAmount] = useState(0);
 
     const copyId = async (id) => {
+        if (!t1) return;
         if (!navigator.clipboard) {
             alert('Копирование в буфер обмена не поддерживается в вашем браузере');
+            setT1(false);
             return;
         }
 

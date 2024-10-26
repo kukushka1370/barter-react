@@ -19,6 +19,9 @@ const DealsPage = () => {
     const [obPlatUserId, setObPlatUserId] = useState("");
     const [obPlatSumma, setObPlatSumma] = useState("");
 
+    const [obPlatUserId1, setObPlatUserId1] = useState("");
+    const [obPlatSumma1, setObPlatSumma1] = useState("");
+
     const [newCurrencySymbol, setNewCurrencySymbol] = useState("");
     const [newCurrencyCode, setNewCurrencyCode] = useState("");
     const [newCurrencyName, setNewCurrencyName] = useState("");
@@ -66,8 +69,17 @@ const DealsPage = () => {
     const createCredit = () => {
         $api.post("/bank/new-credit", { userId: user?.id || user?._id, bankId: obPlatUserId, amount: obPlatSumma })
             .then((res) => {
-                alert(`Обещанный платеж открыт!`);
                 console.log(res.data);
+                alert(`Обещанный платеж открыт!`);
+            })
+            .catch((err) => alert(err.message));
+    };
+
+    const askForCredit = () => {
+        $api.post("/bank/new-credit-ask", { userId: user?.id || user?._id, bankId: obPlatUserId1, amount: obPlatSumma1 })
+            .then((res) => {
+                console.log(res.data);
+                alert(`Ожидайте рассмотрения заявки`);
             })
             .catch((err) => alert(err.message));
     };
@@ -78,12 +90,20 @@ const DealsPage = () => {
                 showModal && <BankAccountModal onClose={() => setShowModal(false)} addBankAccount={addBankAccount} currencies={currencies} />
             }
             {
-                showModal2 && <div style={{ position: "absolute", background: "grey", height: "400px", width: "22rem", zIndex: 5 }}>
+                showModal2 && <div style={{ position: "absolute", background: "grey", height: "600px", width: "22rem", zIndex: 5, display: "flex", gap: "10px", flexDirection: "column" }}>
                     <span style={{ cursor: "pointer", padding: "1rem", color: "#fff" }} onClick={() => setShowModal2(false)}>X</span>
                     <div style={{ display: "flex", flexDirection: "column", padding: "1rem", gap: "1rem", fontSize: "15px" }}>
+                        {/* <label htmlFor="">Этому человеку вы откроете обещанный платеж</label> */}
+                        <h3 style={{fontSize: "18px", color: "#fff"}}>Открыть обещанный платеж</h3>
                         <input value={obPlatUserId} onChange={(e) => setObPlatUserId(e.target.value)} type="text" placeholder="Введите Id пользователя" />
                         <input value={obPlatSumma} onChange={(e) => setObPlatSumma(e.target.value)} type="text" placeholder="Введите сумму обещанного платежа" />
                         <span onClick={() => createCredit()} style={{ display: "grid", placeContent: "center", color: "#fff", border: "1px solid", padding: "1rem", cursor: "pointer" }}>Открыть обещанный платеж</span>
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", padding: "1rem", gap: "1rem", fontSize: "15px" }}>
+                        <h3 style={{fontSize: "18px", color: "#fff"}}>Запросить обещанный платеж</h3>
+                        <input value={obPlatUserId1} onChange={(e) => setObPlatUserId1(e.target.value)} type="text" placeholder="Введите Id компании" />
+                        <input value={obPlatSumma1} onChange={(e) => setObPlatSumma1(e.target.value)} type="text" placeholder="Введите сумму обещанного платежа" />
+                        <span onClick={() => askForCredit()} style={{ display: "grid", placeContent: "center", color: "#fff", border: "1px solid", padding: "1rem", cursor: "pointer" }}>Запросить обещанный платеж</span>
                     </div>
                 </div>
             }
@@ -104,7 +124,7 @@ const DealsPage = () => {
                     </div>
                     <textarea value={comment} onChange={(e) => setComment(e.target.value)} name="" id=""></textarea>
                     <span
-                        onClick={async() => {
+                        onClick={async () => {
                             setDisplayRatingModal(false);
                             await $api.post("/users/update-rating", { rating, userId: toToId, review: comment })
                                 .then(res => console.log(res.data))

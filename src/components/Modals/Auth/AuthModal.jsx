@@ -5,14 +5,17 @@ import { AuthContext } from "../../../context/AuthContext";
 const AuthModal = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [repeatedPassword, setRepeatedPassword] = useState("");
+    const [selectedIndex, setSelectedIndex] = useState("");
     const [registrationStep, setRegistrationStep] = useState(1);
-    const { authInfo, updateAuthInfo, isAuthLoading, registerUser, loginUser, authError } = useContext(AuthContext);
+    const { authInfo, updateAuthInfo, isAuthLoading, registerUser, loginUser, authError, postIndexes } = useContext(AuthContext);
 
-    const postIndexOptions = [
-        { value: 'option1', label: 'Option 1' },
-        { value: 'option2', label: 'Option 2' },
-        { value: 'option3', label: 'Option 3' },
-      ];
+    // const postIndexOptions = [
+    //     { value: 'option1', label: 'Option 1' },
+    //     { value: 'option2', label: 'Option 2' },
+    //     { value: 'option3', label: 'Option 3' },
+    //   ];
+
+    const postIndexOptions = postIndexes?.map((index) => ({ value: index?.val, label: index?.val }))
 
     const steps = {
         1: <>
@@ -49,7 +52,10 @@ const AuthModal = () => {
             <Form.Group>
                 <Form.Label>Почтовый индекс</Form.Label>
                 <Form.Control value={authInfo.postcode} type="text" placeholder="Почтовый индекс" onChange={e => updateAuthInfo({ ...authInfo, postcode: e.target.value })} />
-                <select name="" id="" style={{padding: "10px", width: "100%", marginTop: ".3rem"}}>
+                <select value={selectedIndex} onChange={(e) => {
+                    setSelectedIndex(e.target.value); // Обновляем состояние selectedIndex
+                    updateAuthInfo({ ...authInfo, postcode: e.target.value }); // Обновляем postcode, если нужно
+                }} name="" id="" style={{ padding: "10px", width: "100%", marginTop: ".3rem" }}>
                     {
                         postIndexOptions?.map((opt, i) => (
                             <option value={opt.value} key={i}>{opt.label}</option>
@@ -77,7 +83,10 @@ const AuthModal = () => {
     const handleAuth = (e) => {
         e.preventDefault();
         if (isLogin) return loginUser();
-        if (registrationStep === 4) return registerUser();
+        if (registrationStep === 4) {
+            if (!postIndexes.includes(authInfo?.postIndex)) return alert("Такого почтового индекса не существует")
+            return registerUser();
+        }
         return;
     };
 

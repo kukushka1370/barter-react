@@ -17,8 +17,8 @@ const Sidebar = () => {
             </span>
             <ProgressBar
                 variant={user?.rating > 80 ? "success" : (user?.rating > 50 ? "warning" : "danger")}
-                label={`${user?.rating}%`}
-                now={user?.rating}
+                label={`${Math.round(user?.rating)}%`}
+                now={Math.round(user?.rating)}
                 style={{ height: "20px", borderRadius: "10px" }}
             />
             <div className="d-flex flex-column" style={{ gap: "2px" }}>
