@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 
 import Layout from "../Layout/Layout";
 import HomePage from "../../pages/Home/HomePage";
@@ -44,7 +44,7 @@ const AppRouter = () => {
                 <Route path="mailing" element={<MailingPage />} />
                 <Route path="documents" element={<DocumentsPage />} />
                 <Route path="deals-control" element={<DealsControl />} />
-                <Route path="*" element={<HomePage />} />
+                <Route path="*" element={<Navigate to="/" />} />
             </Route>
         </Routes>
     );
