@@ -3,6 +3,7 @@ import { Stack } from "react-bootstrap";
 import { useFetchRecipientUser } from "../../hooks/useFetchRecipient";
 import { useContext, useEffect } from "react";
 import { ChatContext } from "../../context/ChatContext";
+import { formatDate } from "../../utils/utils";
 
 const Chat = ({ chat, user }) => {
     const { recipientUser } = useFetchRecipientUser(chat, user);
@@ -16,7 +17,8 @@ const Chat = ({ chat, user }) => {
         console.log({chat});
     }, [user, chat]);
 
-    const isOnline = onlineUsers?.some(user => user?.userId === recipientUser?._id)
+    const isOnline = onlineUsers?.some(user => user?.userId === recipientUser?._id);
+    const datee = formatDate(chat?.updatedAt)
 
     return (
         <Stack direction="horizontal" gap={3} className="user-card align-items-center p-2 justify-content-between" role="button">
@@ -28,8 +30,8 @@ const Chat = ({ chat, user }) => {
                 {/* <div className="text">Text message</div> */}
             </div>
             <div className="d-flex flex-column align-items-end">
-                {/* <div className="date">12/12/2024</div> */}
-                <div className="this-user-notifications">2</div>
+                <div className="date">{datee || chat?.updatedAt || ""}</div>
+                {/* <div className="this-user-notifications">{2}</div> */}
                 <span className={isOnline ? "user-online" : ""}></span>
             </div>
         </Stack>

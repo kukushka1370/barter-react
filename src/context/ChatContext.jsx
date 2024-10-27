@@ -113,6 +113,10 @@ export const ChatContextProvider = ({ children }) => {
         }
     }, [userChats, user]);
 
+     useEffect(() => {
+        console.log(currentChat)
+     }, [currentChat])
+
     useEffect(() => {
         const userId = user?._id || user?.id;
         if (userId) {
@@ -184,12 +188,16 @@ export const ChatContextProvider = ({ children }) => {
     }
 
     const createChat = useCallback(async (firstId, secondId) => {
+        console.log({firstId, secondId})
         ChatService.createChat({ firstId, secondId })
             .then(res => {
+                console.log(res.data);
                 setUserChats(prev => {
                     if (prev) return [...prev, res.data];
                 });
+                updateCurrentChat(res.data);
                 console.log("User Chats (Chat Context) ", res.data);
+                console.log("!!+++++++!!", userChats);
             })
             .catch(err => console.warn('An error occured while creating chat' + err));
     }, []);

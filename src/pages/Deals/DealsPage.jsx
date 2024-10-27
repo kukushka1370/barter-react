@@ -87,6 +87,11 @@ const DealsPage = () => {
     return (
         <div className={styles["deals-container"]}>
             {
+                user?.isDemo && <div className={styles["overlay"]}>
+                    <h1>Дождитесь одобрения заявки для использования сделок</h1>
+                </div>
+            }
+            {
                 showModal && <BankAccountModal onClose={() => setShowModal(false)} addBankAccount={addBankAccount} currencies={currencies} />
             }
             {

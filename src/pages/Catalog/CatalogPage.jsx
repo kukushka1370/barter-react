@@ -11,8 +11,6 @@ const CatalogPage = () => {
     const { user } = useContext(AuthContext);
 
     const location = useLocation();
-    const searchParams = new URLSearchParams(location.search);
-    const userId = searchParams.get("userId") || null;
 
     const [searchValue, setSearchValue] = useState("");
     const [isProductModalOpened, setIsProductModalOpened] = useState(false);
@@ -22,13 +20,22 @@ const CatalogPage = () => {
     const [selectedPriceMovement, setSelectedPriceMovement] = useState("От дорогого к дешевому");
 
     useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const userId = searchParams.get("userId") || null;
         if (!userId) {
+            // alert()
             return setFilteredProducts([...products]);
         }
         console.log('PROd ', products);
-        const filteredByUserIdProducts = products.filter((prod) => prod?.userId?.toString() === userId?.toString())
-        setFilteredProducts([...filteredByUserIdProducts]);
-    }, [products, userId]);
+        // alert(userId)
+        const filteredByUserIdProducts = products.filter((prod) => prod.userId === userId);
+        // alert(filteredByUserIdProducts.length)
+        console.log({ filteredByUserIdProducts })
+        if (filteredByUserIdProducts.length < 1) {
+            return setFilteredProducts([])
+        }
+        setFilteredProducts(filteredByUserIdProducts);
+    }, [products, location]);
 
     useEffect(() => {
         const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -56,6 +63,16 @@ const CatalogPage = () => {
 
     useEffect(() => {
         fetchProducts();
+        const searchParams = new URLSearchParams(location.search);
+        const userId = searchParams.get("userId") || null;
+        if (userId) {
+            const filteredByUserIdProducts = products.filter((prod) => prod.userId === userId);
+            console.log({ filteredByUserIdProducts })
+            if (filteredByUserIdProducts.length < 1) {
+                return setFilteredProducts([]);
+            }
+            setFilteredProducts(filteredByUserIdProducts);
+        }
     }, []);
 
     const handleOpenModal = () => {
@@ -129,7 +146,7 @@ const CatalogPage = () => {
             }
             <div className="d-flex flex-wrap justify-content-center" style={{ gap: "50px" }}>
                 {
-                    !filteredProducts?.length ? <span>Ничего не найдено</span> :
+                    filteredProducts?.length < 1 ? <span>Ничего не найдено</span> :
                         filteredProducts?.map((product, index) => (
                             <ProductCard productInfo={product} key={index} />
                         ))

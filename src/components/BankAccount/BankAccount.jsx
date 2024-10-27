@@ -1,12 +1,12 @@
 // import styles from "./BankAccount.module.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
 const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amountPurchases, amountSales, deleteBankAccount, id }) => {
     const location = useLocation();
 
-    const { bankAccounts } = useContext(AuthContext);
+    const { bankAccounts, fetchUserBankAccounts } = useContext(AuthContext);
     const [t1, setT1] = useState(true);
 
     const { transferMoney } = useContext(AuthContext);
@@ -14,6 +14,10 @@ const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amou
 
     const [transferBankAccountId, setTransferBankAccountId] = useState("");
     const [transferAmount, setTransferAmount] = useState(0);
+
+    useEffect(() => {
+        fetchUserBankAccounts();
+    }, []);
 
     const copyId = async (id) => {
         if (!t1) return;

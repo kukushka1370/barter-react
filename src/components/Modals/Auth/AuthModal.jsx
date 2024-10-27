@@ -84,7 +84,9 @@ const AuthModal = () => {
         e.preventDefault();
         if (isLogin) return loginUser();
         if (registrationStep === 4) {
-            if (!postIndexes.includes(authInfo?.postIndex)) return alert("Такого почтового индекса не существует")
+            alert(authInfo?.postcode)
+            console.log(postIndexes)
+            if (!postIndexes.some(p => p.val === authInfo?.postcode)) return alert("Такого почтового индекса не существует")
             return registerUser();
         }
         return;

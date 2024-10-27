@@ -52,7 +52,7 @@ const GroupChat = () => {
             </div>
             <ul ref={chatListRef} className={styles["list"]} style={{
                 overflowY: "auto",
-                maxHeight: "450px",
+                // maxHeight: "460px",
                 padding: "10px",
                 scrollbarWidth: "thin",
                 scrollbarColor: "gray",
