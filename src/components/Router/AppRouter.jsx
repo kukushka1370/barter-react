@@ -39,7 +39,7 @@ const AppRouter = () => {
                 <Route path="user-agreement" element={<UserAgreementPage />} />
                 <Route path="rules" element={<RulesPage />} />
                 <Route path="statistics" element={<StatisticsPage />} />
-                <Route path="control" element={user?.role?.includes("owner") || user?.role?.includes("владелец") ? <ControlPage /> : <HomePage />} />
+                <Route path="control" element={user?.role?.includes("owner") || user?.role?.includes("владелец") ? <ControlPage /> : <Navigate to="/" />} />
                 <Route path="refferals" element={<RefferalsPage />} />
                 <Route path="mailing" element={<MailingPage />} />
                 <Route path="documents" element={<DocumentsPage />} />
