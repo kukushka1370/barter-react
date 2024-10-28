@@ -6,7 +6,7 @@ import { Spinner } from "react-bootstrap";
 import { AuthContext } from "../../../context/AuthContext";
 
 const ProductModal = ({ onClose }) => {
-    const { productCategories, addProduct, isAddProductLoading } = useContext(ShopContext);
+    const { productCategories, addProduct, isAddProductLoading, currencies } = useContext(ShopContext);
     const { user } = useContext(AuthContext);
     const [selectedOption, setSelectedOption] = useState("");
     const [selectedCurrOption, setSelectedCurrOption] = useState("RUB");
@@ -86,7 +86,7 @@ const ProductModal = ({ onClose }) => {
                         setSelectedCurrOption(e.target.value);
                     }}>
                         {
-                            ["USD", "RUB", "EUR", "UAH"]?.map((opt, ind) => (
+                            currencies?.map((opt, ind) => (
                                 <option value={opt} key={ind}>{opt}</option>
                             ))
                         }
