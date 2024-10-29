@@ -128,12 +128,19 @@ export const AuthContextProvider = ({ children }) => {
     }, []);
 
     const transferMoney = useCallback(async (id, transferBankAccountId, transferAmount) => {
-        await BankAccountService.transferMoney({ bankAccountFromId: id, bankAccountToId: transferBankAccountId.trim(), transferAmount }).then((response) => {
+        if (id !== transferBankAccountId) {
+            const t = window.confirm(`Вы уверены, что хотите перевести ${transferAmount} на кошелек ${transferBankAccountId?.trim()}?\nЕсли Вы случайно совершили перевод, нажмите cancel`);
+            if (!t) return alert("Перевод отменен");
+        }
+        await BankAccountService.transferMoney({ bankAccountFromId: id, bankAccountToId: transferBankAccountId?.trim(), transferAmount }).then((response) => {
             console.log(response.data.userBA);
             // alert(`Exchange rate : ${response.data.exchangeRate}`);
             if (response?.data?.internationalTransfer) {
                 setDisplayRatingModal(true);
                 setToToId(response.data.bankAccountTo.userId);
+            }
+            if (!response?.data?.internationalTransfer) {
+                alert(`Перевод совершен успешно!\nВы перевели ${transferAmount}`);
             }
             setShowTransferModal(true);
             return setBankAccounts(response?.data?.userBA || []);

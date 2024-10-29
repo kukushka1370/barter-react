@@ -86,9 +86,9 @@ const App = () => {
     await fetchPostIndexes();
   };
 
-  if (!user) {
-    return <AuthModal />
-  }
+  // if (!user) {
+  //   return <AuthModal />
+  // }
 
   return (
     <BrowserRouter>

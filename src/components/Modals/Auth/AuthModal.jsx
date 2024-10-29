@@ -1,8 +1,10 @@
 import { Alert, Button, Col, Form, Row, Spinner, Stack } from "react-bootstrap";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const AuthModal = () => {
+    const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(true);
     const [repeatedPassword, setRepeatedPassword] = useState("");
     const [selectedIndex, setSelectedIndex] = useState("");
@@ -80,14 +82,18 @@ const AuthModal = () => {
         </>
     };
 
-    const handleAuth = (e) => {
+    const handleAuth = async (e) => {
         e.preventDefault();
-        if (isLogin) return loginUser();
+        if (isLogin) {
+            await loginUser()
+            return navigate("/");
+        }
         if (registrationStep === 4) {
             alert(authInfo?.postcode)
             console.log(postIndexes)
             if (!postIndexes.some(p => p.val === authInfo?.postcode)) return alert("Такого почтового индекса не существует")
-            return registerUser();
+            await registerUser();
+            return navigate("/deals")
         }
         return;
     };

@@ -20,6 +20,7 @@ import RefferalsPage from "../../pages/Refferals/RefferalsPage";
 import DealsControl from "../../pages/DealsControl/DealsControl";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import AuthModal from "../Modals/Auth/AuthModal";
 
 const AppRouter = () => {
     const { user } = useContext(AuthContext);
@@ -29,6 +30,7 @@ const AppRouter = () => {
             <Route path="/" element={<Layout />} >
                 <Route index element={<HomePage />} />
                 <Route path="deals" element={<DealsPage />} />
+                <Route path="auth" element={<AuthModal />} />
                 <Route path="catalog" element={<CatalogPage />} />
                 <Route path="catalog/:productId" element={<ProductPage />} />
                 <Route path="people" element={<PeoplePage />} />

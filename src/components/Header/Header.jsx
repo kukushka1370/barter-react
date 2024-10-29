@@ -31,7 +31,7 @@ const Header = () => {
 
             <div className={styles["header-nav"]} style={{ display: isMenuOpened ? "flex" : "", zIndex: "4" }}>
                 <div className={styles["header-nav-left"]}>
-                    <Link onClick={() => handleLinkClick()} className={styles["header-nav-link"]} to="deals">Сделки</Link>
+                    <Link onClick={() => handleLinkClick()} className={styles["header-nav-link"]} to={user ? "deals" : "auth"}>{user ? "Сделки" : "Войти"}</Link>
                     <Link onClick={() => handleLinkClick()} className={styles["header-nav-link"]} to="catalog">Каталог</Link>
                     <Link onClick={() => handleLinkClick()} className={styles["header-nav-link"]} to="people">Люди</Link>
                     <Link onClick={() => handleLinkClick()} className={styles["header-nav-link"]} to="users-rating">Рейтинги пользователей</Link>
@@ -83,7 +83,7 @@ const Header = () => {
                             <li><Link onClick={() => handleLinkClick()} to="deals" className={styles["header-nav-link"]}>Счет</Link></li>
                             <li><Link onClick={() => handleLinkClick()} to={`catalog?userId=${user?.id}`} className={styles["header-nav-link"]}>Мои товары</Link></li>
                             <li><Link onClick={() => handleLinkClick()} to="refferals" className={styles["header-nav-link"]}>Рефералы</Link></li>
-                            <li><Link onClick={(e) => logoutUser(e)} to="auth" className={styles["header-nav-link"]}>Выход</Link></li>
+                            <li><Link onClick={(e) => {handleLinkClick(); logoutUser(e)}} to="auth" className={styles["header-nav-link"]}>Выход</Link></li>
                         </ul>
                     }
                 </div>

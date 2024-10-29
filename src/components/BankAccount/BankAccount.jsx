@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
-const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amountPurchases, amountSales, deleteBankAccount, id }) => {
+const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amountPurchases, amountSales, deleteBankAccount, id, isCredit, term }) => {
     const location = useLocation();
 
     const { bankAccounts, fetchUserBankAccounts } = useContext(AuthContext);
@@ -41,12 +41,12 @@ const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amou
                 showTransferModal && <div style={{ position: "absolute", height: "300px", width: "500px", zIndex: "5", background: "grey", padding: ".2rem", display: "flex", gap: "1rem", flexDirection: "column" }}>
                     <span style={{ cursor: "pointer" }} onClick={() => setShowTransferModal(false)}>X</span>
                     <div style={{ display: "flex", gap: "1rem", flexDirection: "column" }}>
-                        <input  style={{width: "100%", padding: ".2rem", fontSize: "13px"}} value={transferBankAccountId} onChange={(e) => setTransferBankAccountId(e.target.value)} placeholder="Ваш универсальный ключ для перевода" type="text" />
-                        <input  style={{width: "100%", padding: ".2rem", fontSize: "13px"}} value={transferAmount} onChange={(e) => setTransferAmount(e.target.value)} placeholder="Сумма для перевода" type="text" />
+                        <input style={{ width: "100%", padding: ".2rem", fontSize: "13px" }} value={transferBankAccountId} onChange={(e) => setTransferBankAccountId(e.target.value)} placeholder="Ваш универсальный ключ для перевода" type="text" />
+                        <input style={{ width: "100%", padding: ".2rem", fontSize: "13px" }} value={transferAmount} onChange={(e) => setTransferAmount(e.target.value)} placeholder="Сумма для перевода" type="text" />
                         <span onClick={() => transferMoney(id, transferBankAccountId, transferAmount)} style={{ cursor: "pointer", padding: ".6rem", border: "1px solid", display: "grid", placeContent: "center", color: "#fff" }}>Перевести</span>
                     </div>
                     <div className="d-flex" style={{ gap: "1rem", marginTop: "1rem", alignItems: "center" }}>
-                        <span style={{fontSize: "15px"}}>Id вашего счета :</span>
+                        <span style={{ fontSize: "15px" }}>Id вашего счета :</span>
                         <span style={{ color: "greenyellow", cursor: "pointer" }} onClick={() => copyId(id)}>{id}</span>
                     </div>
                 </div>
@@ -58,6 +58,12 @@ const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amou
                     </div> :
                     <div>
                         <h4>{currency}</h4>
+                        {
+                            isCredit && <div style={{ position: "absolute", right: "10px", top: "10px", display: "flex", flexDirection: "column", zIndex: 3 }}>
+                                <span style={{ fontSize: "18px", color: "black", background: "yellow", padding: ".5rem" }}>Кредит</span>
+                                {/* <span style={{fontSize: "15px"}}>Действителен в течение {term}</span> */}
+                            </div>
+                        }
                         <div className="d-flex flex-wrap" style={{ gap: "20px" }}>
                             <span onClick={() => setShowTransferModal(p => !p || false)} style={{ background: "green", color: "#fff", padding: "8px", cursor: "pointer", borderRadius: "7px", border: "none", fontWeight: "600" }}>Пополнить</span>
                             <span onClick={() => deleteBankAccount(currencyCode)} style={{ background: "red", color: "#fff", padding: "8px", cursor: "pointer", borderRadius: "7px", border: "none", fontWeight: "600" }}>Удалить</span>
@@ -75,6 +81,13 @@ const BankAccount = ({ currency, amountTotal, currencySymbol, currencyCode, amou
             <div className="d-flex justify-content-between" style={{ gap: "20px", color: "#3f3f3f", padding: "10px 10px 10px 5px" }}>
                 <span>В продажах:</span>
                 <span>{amountSales || +bankAccounts[0]?.amountSales || 0} {currencySymbol || bankAccounts[0]?.currencySymbol}</span>
+                {
+                    isCredit &&
+                    <div style={{ position: "absolute", right: "5px", bottom: "10px", display: "flex", flexDirection: "column" }}>
+                        <span style={{ fontSize: "18px", color: "black", background: "yellow", padding: ".5rem" }}>Действует {term} с момента открытия</span>
+                        {/* <span style={{fontSize: "15px"}}>Действителен в течение {term}</span> */}
+                    </div>
+                }
             </div>
         </div>
     );

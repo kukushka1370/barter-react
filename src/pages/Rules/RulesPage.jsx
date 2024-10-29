@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { ShopContext } from "../../context/ShopContext";
 
@@ -9,6 +9,10 @@ const RulesPage = () => {
     function createMarkup() {
         return { __html: rulesPageContent };
     }
+
+    useEffect(() => {
+        console.log({ user });
+    }, [user])
 
     return (
         <div>
@@ -58,10 +62,10 @@ const RulesPage = () => {
             </div> */}
             <div style={{ padding: "20px" }} dangerouslySetInnerHTML={createMarkup()}></div>
             {
-                user?.role.includes("admin") || user?.role.includes("владелец") &&
+                (user?.role?.includes("admin") || user?.role?.includes("владелец")) &&
                 <div style={{ padding: "2rem" }}>
-                    <textarea value={rulesPageContent} onChange={(e) => setRulesPageContent(e.target.value)} name="" id=""></textarea>
-                    <span style={{ display: "grid", placeContent: "center", border: "1px solid", width: "100px" }}>Обновить</span>
+                    <textarea style={{ minWidth: "90%" }} value={rulesPageContent} onChange={(e) => setRulesPageContent(e.target.value)} name="" id=""></textarea>
+                    <span style={{ display: "grid", placeContent: "center", border: "1px solid", width: "100px", cursor: "pointer" }}>Обновить</span>
                 </div>
             }
         </div >
