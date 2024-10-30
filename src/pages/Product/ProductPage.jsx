@@ -65,6 +65,7 @@ const ProductPage = () => {
             {
                 user: {
                     "Id": productInfo["user"]?._id,
+                    // "Idd": productInfo["user"]?._id,
                     "Имя": productInfo["user"]?.name,
                     "Фамилия": productInfo["user"]?.surname,
                     "Рэйтинг": <ProgressBar
@@ -73,7 +74,16 @@ const ProductPage = () => {
                         now={productInfo["user"]?.rating}
                         style={{ height: "20px", borderRadius: "10px", width: "160px" }}
                     />,
-                    "Продано": productInfo["user"]?.productSold || 0,
+                    "Рэйтинг Системы": <ProgressBar
+                        variant={productInfo["user"]?.systemRating > 80 ? "success" : (productInfo["user"]?.systemRating > 50 ? "warning" : "danger")}
+                        label={`${productInfo["user"]?.systemRating}%`}
+                        now={productInfo["user"]?.systemRating}
+                        style={{ height: "20px", borderRadius: "10px", width: "160px" }}
+                    />,
+                    "Количество сделок": productInfo["user"]?.productSold || 0,
+                    // "Количество сделок": productInfo["user"]?.transactionCount || 0,
+                    "Общее количество транзакций": productInfo["transfers"]?.length || 0,
+                    "Количество счетов": productInfo["bankAccounts"]?.length || 0,
                     "E-mail": productInfo["user"]?.email,
                     "Телефон": productInfo["user"]?.phoneNumber,
                     "Организация": productInfo["user"]?.organizationName || "",

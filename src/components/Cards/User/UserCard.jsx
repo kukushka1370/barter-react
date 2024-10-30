@@ -6,13 +6,24 @@ import { $api } from "../../../http";
 
 const UserCard = ({ userInfo }) => {
     const { approveOrDecline, user } = useContext(AuthContext);
+
     const [personalCOmmission, setPersonalCOmmission] = useState(userInfo?.personalCommission || "");
+    const [systemRating, setSystemRating] = useState("");
 
     const changeCommission = () => {
         $api.post("/users/update-commission", { userId: userInfo?.id || userInfo?._id, newCommission: personalCOmmission })
             .then((res) => {
                 console.log(res.data);
                 alert(`Комиссия обновлена для пользователя ${userInfo?.name} ${userInfo?.surname}`);
+            })
+            .catch((err) => alert(err.message));
+    };
+
+    const changeSystemRating = () => {
+        $api.post("/users/update-system-rating", { userId: userInfo?.id || userInfo?._id, systemRating })
+            .then((res) => {
+                console.log(res.data);
+                alert(`Рейтинг пользователя обновлен`);
             })
             .catch((err) => alert(err.message));
     };
@@ -30,6 +41,26 @@ const UserCard = ({ userInfo }) => {
                 now={Math.round(userInfo?.rating || 0)}
                 style={{ height: "17px", borderRadius: "8px", fontSize: "12px", width: "80%" }}
             />
+            <ProgressBar
+                variant={userInfo.systemRating > 80 ? "success" : (userInfo.systemRating > 50 ? "warning" : "danger")}
+                label={`${Math.round(userInfo?.systemRating)}%`}
+                now={Math.round(userInfo?.systemRating || 0)}
+                style={{ height: "17px", borderRadius: "8px", fontSize: "12px", width: "80%" }}
+            />
+            {
+                user?.role?.includes("admin") &&
+                <input
+                    type="text"
+                    placeholder="Введите рейтинг пользователя"
+                    value={systemRating}
+                    onChange={(e) => setSystemRating(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            return changeSystemRating();
+                        }
+                    }}
+                />
+            }
             <div className="d-flex flex-wrap justify-content-evenly" style={{ gap: "5px" }}>
                 <Link to={`/catalog?userId=${userInfo?.id || userInfo?._id}`} className="d-flex align-items-center justify-content-center" style={{ background: "#f0ad4e", borderRadius: "7px", padding: "5px", textDecoration: "none", color: "#fff", width: "110px", fontSize: ".9em", fontWeight: "500" }}>Товары</Link>
                 <Link to={`/`} className="d-flex align-items-center justify-content-center" style={{ background: "#5bc0de", borderRadius: "7px", padding: "5px", textDecoration: "none", color: "#fff", width: "110px", fontSize: ".9em", fontWeight: "500" }}>Потребности</Link>

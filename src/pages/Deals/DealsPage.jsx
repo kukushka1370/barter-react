@@ -51,8 +51,8 @@ const DealsPage = () => {
     const { currencies, getCurrencies } = useContext(ShopContext);
 
     useEffect(() => {
-        fetchUserBankAccounts();
         getCurrencies();
+        fetchUserBankAccounts();
     }, []);
 
     // useEffect(() => {
